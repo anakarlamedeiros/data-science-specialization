@@ -1,0 +1,99 @@
+---
+title: "Creating tidy data for the 'UCI HAR Dataset'"
+author: "Ana Karla Medeiros"
+date: "July 26, 2015"
+output:
+  html_document:
+    keep_md: yes
+---
+
+
+### Tidy data: Introduction
+
+**This document describes the tidy data '*tidy_UCI_HAR_Dataset.txt*' that has been created as part of the project for the course "Getting and Cleanining Data".**
+The tidy data is based on the 'UCI HAR Dataset' available at <https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip>. 
+
+
+As explained in the file 'README.txt' from 'UCI HAR Dataset':
+
+*"(...) The experiments have been carried out with a group of 30 volunteers within an age bracket of 19-48 years. Each person performed six activities (WALKING, WALKING_UPSTAIRS, WALKING_DOWNSTAIRS, SITTING, STANDING, LAYING) wearing a smartphone (Samsung Galaxy S II) on the waist. Using its embedded accelerometer and gyroscope, we captured 3-axial linear acceleration and 3-axial angular velocity at a constant rate of 50Hz. The experiments have been video-recorded to label the data manually. The obtained dataset has been randomly partitioned into two sets, where 70% of the volunteers was selected for generating the training data and 30% the test data. (...)"*
+
+For more details on the 'UCI HAR Dataset', please refer to the files 'README.txt', and 'features_info.txt' at <https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip>. 
+
+The remainder of this document explains the variables, the data and the transformations that have been performed to the 'UCI HAR Dataset' when creating the tidy data **tidy_UCI_HAR_Dataset.txt**.
+
+### Tidy data: Variables
+
+There are 69 variables in the tidy data:
+
+1. "SUBJECT_IDENTIFIER": subject (or volunteer) number            
+2. "ACTIVITY_IDENTIFIER": identifier of the activity performed by the subject
+3. "ACTIVITY_LABEL": label of the activity performed by the subject
+  
+The remaining 66 variables are **averages computed for the mean and the standard deviations measurements in the "UCI HAR Dataset" for the training and the test datasets**. Hereby the excerpt of the file 'features_info.txt' describing these variables:
+
+*" (...) The features selected for this database come from the accelerometer and gyroscope 3-axial raw signals tAcc-XYZ and tGyro-XYZ. These time domain signals (prefix 't' to denote time) were captured at a constant rate of 50 Hz. Then they were filtered using a median filter and a 3rd order low pass Butterworth filter with a corner frequency of 20 Hz to remove noise. Similarly, the acceleration signal was then separated into body and gravity acceleration signals (tBodyAcc-XYZ and tGravityAcc-XYZ) using another low pass Butterworth filter with a corner frequency of 0.3 Hz.* 
+
+*Subsequently, the body linear acceleration and angular velocity were derived in time to obtain Jerk signals (tBodyAccJerk-XYZ and tBodyGyroJerk-XYZ). Also the magnitude of these three-dimensional signals were calculated using the Euclidean norm (tBodyAccMag, tGravityAccMag, tBodyAccJerkMag, tBodyGyroMag, tBodyGyroJerkMag).* 
+
+*Finally a Fast Fourier Transform (FFT) was applied to some of these signals producing fBodyAcc-XYZ, fBodyAccJerk-XYZ, fBodyGyro-XYZ, fBodyAccJerkMag, fBodyGyroMag, fBodyGyroJerkMag. (Note the 'f' to indicate frequency domain signals).* 
+
+*These signals were used to estimate variables of the feature vector for each pattern:  '-XYZ' is used to denote 3-axial signals in the X, Y and Z directions.*
+
+- *tBodyAcc-XYZ*
+- *tGravityAcc-XYZ*
+- *tBodyAccJerk-XYZ*
+- *tBodyGyro-XYZ*
+- *tBodyGyroJerk-XYZ*
+- *tBodyAccMag*
+- *tGravityAccMag*
+- *tBodyAccJerkMag*
+- *tBodyGyroMag*
+- *tBodyGyroJerkMag*
+- *fBodyAcc-XYZ*
+- *fBodyAccJerk-XYZ*
+- *fBodyGyro-XYZ*
+- *fBodyAccMag*
+- *fBodyAccJerkMag*
+- *fBodyGyroMag*
+- *fBodyGyroJerkMag*
+
+*The set of variables that were estimated from these signals are:*
+
+- *mean(): Mean value*
+- *std(): Standard deviation*
+*(...)*
+
+### Tidy data: Data
+
+The tidy dataset has 40 rows describing the averages for the mean's and standard deviation's measurements of 30 volunteers per performed activity. Note that not all subjects (or volunteers) have performed all the activities. 
+
+The tidy dataset is based on the training and test datasets provided in the 'UCI HAR Dataset'. 
+
+The test dataset consists of the files: 
+
+- X_test.txt: contains the actual measurements, including the mean and standard deviations
+- subject_test.txt: subject identifiers per row of 'X_test.txt'
+- y_test.txt: activity identifier per row of 'X_test.txt'
+
+In a similar way, the training dataset has the files : 
+
+- X_train.txt: contains the actual measurements, including the mean and standard deviations
+- subject_train.txt: subject identifiers per row of 'X_test.txt'
+- y_train.txt: activity identifier per row of 'X_test.txt'
+
+
+### Tidy data: Transformations
+
+The tidy dataset **'tidy_UCI_HAR_Dataset.txt'** contains the averages of the mean and the standard deviations measurements for all the individuals per performed activity. Therefore, to get all this into one data, the following operations have been performed:
+
+1. Combine the *test* files into one, where each row also contains the subject identifier,  the activity identifier, the activity label, mean values of the measurements and standard deviation values of the measurements.
+2. Combine the *training* files as described in the previous step.
+3. Compute the *average (or mean)* of these measurements per unique subject, activity identifier and activity label
+4. Write the result to the textual file **'tidy_UCI_HAR_Dataset.txt'**
+
+```{r, echo = TRUE}
+tidyData <- read.table("./tidy_UCI_HAR_Dataset.txt", header=TRUE, sep=",")
+head(tidyData, n=2)
+```
+
