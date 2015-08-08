@@ -32,7 +32,7 @@ processDataset <- function(fileFeatureLabels,
                            fileActivityLabels, colActivityID, colActivity,
                            fileSubject, colNameSubjectID,
                            fileAcivityClassifications, fileDataset){
-    
+  
     ## Reading the files given as input
     
     #### Reading the feature labels for the columns in dataset
@@ -50,8 +50,9 @@ processDataset <- function(fileFeatureLabels,
     #### Reading the activity identifiers for the dataset
     activityClassification <- read.table(fileAcivityClassifications)
     colnames(activityClassification) <- c(colActivityID)
-    activityClassification <- merge(activityClassification, activityLabels, by.x=colActivityID, by.y=colActivityID, all=TRUE)
-    
+    activityClassification <- merge(activityClassification, activityLabels, 
+                                    by.x=colActivityID, by.y=colActivityID, 
+                                    all=TRUE, sort=FALSE)
     #### Reading the dataset
     dataset <- read.table(fileDataset)
     colnames(dataset) <- featuresLabels[,2]
